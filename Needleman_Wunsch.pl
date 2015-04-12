@@ -17,12 +17,6 @@ my $scoreMatrix;
 my @lettersA = split //, $seq1;
 my @lettersB = split //, $seq2;
 
-if (@lettersA > @lettersB) {
-	my @temp = @lettersA;
-	@lettersA = @lettersB;
-	@lettersB = @temp;
-}
-
 # Fill out initial values
 # Example:
 #         G   C   A   T   G   C   U
