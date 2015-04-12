@@ -1,7 +1,6 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
-#use List::Util qw(max);
 use Data::Dump;
 
 my $seq1 = $ARGV[0] // 'GCATGCU';
