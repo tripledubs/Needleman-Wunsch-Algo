@@ -25,9 +25,6 @@ if (@lettersA > @lettersB) {
 	@lettersB = @temp;
 }
 
-
-
-
 # Fill out initial values
 # Example:
 #         G   C   A   T   G   C   U
