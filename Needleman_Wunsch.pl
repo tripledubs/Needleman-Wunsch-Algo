@@ -5,27 +5,42 @@ use List::Util qw(max);
 use Data::Dump;
 use Data::Dumper;
 
+
+my $seq1 = $ARGV[0] // 'GCATGCU';
+my $seq2 = $ARGV[1] // 'GATTACA';
+
+if (!$seq1 or !$seq2) {
+	die "Must present two strings on command line";
+}
+
 my $gap_penalty = -1;
 my $scoreMatrix;
-
-my $seq1 = 'GCATGCU';
-my $seq2 = 'GATTACA';
 
 my @lettersA = split //, $seq1;
 my @lettersB = split //, $seq2;
 
-$scoreMatrix->[0][0] = 0;
-my $tracebackMatrix;
+
+
+# Fill out initial values
+# Example:
+#         G   C   A   T   G   C   U
+#     0   -1  -2  -3  -4  -5  -6  -7
+#  G -1   
+#  A -2
+#  T -3
+#  T -4
+#  A -5
+#  C -6
+#  A -7
 
 for (my $i=0; $i < length($seq1)+ 1 ; $i++) {
 	$scoreMatrix->[$i][0] = $i * $gap_penalty;
+	$scoreMatrix->[0][$i] = $i * $gap_penalty;
 }
 
-for (my $j=0; $j < length($seq2) + 1; $j++) {
-	$scoreMatrix->[0][$j] = $j * $gap_penalty;
-}
 
-for (my $i = 1; $i < length($seq1) + 1; $i++) {
+my $tracebackMatrix;
+for (my $i = 1; $i < length($seq1)+ 1; $i++) {
  for (my $j = 1; $j < length($seq2) + 1; $j++) {
 	 # Diagonal
 	 my $match = 
@@ -57,9 +72,8 @@ my $alignB = '';
 my $i = length($seq1);
 my $j = length($seq2);
 
-
-dd $scoreMatrix;
-dd $tracebackMatrix;
+#dd $scoreMatrix;
+#dd $tracebackMatrix;
 
 while ( $i > 0 or $j > 0) {
 	if ($i > 0 and $j > 0 and $tracebackMatrix->[$i][$j] eq 'Diagonal') {
@@ -78,13 +92,14 @@ while ( $i > 0 or $j > 0) {
 	}
 }
 
-print "AlignA: $alignA\n";
-print "AlignB: $alignB\n";
-
 sub score {
 	my ($letterA, $letterB) = @_;
 	return 1 if ($letterA eq $letterB); #Match
 	return -1 if ($letterA ne $letterB); # Mismatch
 	return -1 if (!$letterB); # Only received one letter
 }
+
+print "Best alignment for $seq1: $alignA\n";
+print "Best alignment for $seq2: $alignB\n";
+
 
