@@ -100,16 +100,12 @@ sub score {
 }
 
 sub max {
-	my $max = shift;
-	my $compare = pop @_;
-	return $max if (!$compare);
-	if ($compare > $max) {
-		$max = $compare;
+	my ($max, @vars) = @_;
+	for (@vars) {
+		$max = $_ if ($_ > $max);
 	}
-	return max($max,@_);
+	return $max;
 }
-
-
 
 print "Best alignment for $seq1: $alignA\n";
 print "Best alignment for $seq2: $alignB\n";
