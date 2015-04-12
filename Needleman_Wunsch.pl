@@ -90,8 +90,7 @@ while ( $i > 0 or $j > 0) {
 
 sub score {
 	my ($letterA, $letterB) = @_;
-	return -1 if (!$letterB); # Only received one letter
-	return -1 if (!$letterA); # Only received one letter
+	return -1 if (scalar @_ < 2); #Only received one letter
 	return 1 if ($letterA eq $letterB); #Match
 	return -1 if ($letterA ne $letterB); # Mismatch
 }
