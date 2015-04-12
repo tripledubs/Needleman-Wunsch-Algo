@@ -19,6 +19,13 @@ my $scoreMatrix;
 my @lettersA = split //, $seq1;
 my @lettersB = split //, $seq2;
 
+if (@lettersA > @lettersB) {
+	my @temp = @lettersA;
+	@lettersA = @lettersB;
+	@lettersB = @temp;
+}
+
+
 
 
 # Fill out initial values
@@ -38,17 +45,21 @@ for (my $i=0; $i < length($seq1)+ 1 ; $i++) {
 	$scoreMatrix->[0][$i] = $i * $gap_penalty;
 }
 
+#dd $scoreMatrix;
 
 my $tracebackMatrix;
+$tracebackMatrix->[0][0] = 'Diagonal';
+
 for (my $i = 1; $i < length($seq1)+ 1; $i++) {
  for (my $j = 1; $j < length($seq2) + 1; $j++) {
+	 no warnings;
 	 # Diagonal
 	 my $match = 
 		 $scoreMatrix->[$i-1][$j-1] + 
 		 score($lettersA[$i-1],$lettersB[$j-1]);
 
 	 # up
-	 my $delete = $scoreMatrix->[$i-1][$j] + $gap_penalty;
+	 my $delete = $scoreMatrix->[$i-1][$j] + $gap_penalty ;
 
 	 # left
 	 my $insert = $scoreMatrix->[$i][$j-1] + $gap_penalty;
@@ -76,16 +87,17 @@ my $j = length($seq2);
 #dd $tracebackMatrix;
 
 while ( $i > 0 or $j > 0) {
-	if ($i > 0 and $j > 0 and $tracebackMatrix->[$i][$j] eq 'Diagonal') {
+	no warnings;
+	if ($i > 0 && $j > 0 && $tracebackMatrix->[$i][$j] eq 'Diagonal') {
 		$alignA = $lettersA[$i-1] . $alignA;
 		$alignB = $lettersB[$j-1] . $alignB;
 		$i--;
 		$j--;
-	} elsif ($i > 0 and $tracebackMatrix->[$i][$j] eq 'Up') {
+	} elsif ($i > 0 &&  $tracebackMatrix->[$i][$j] eq 'Up') {
 		$alignA = $lettersA[$i-1] . $alignA;
 		$alignB = '-' . $alignB;
 		$i--;
-	} elsif ($j > 0 and $tracebackMatrix->[$i][$j] eq 'Left') {
+	} else {
 		$alignA = '-' . $alignA;
 		$alignB = $lettersB[$j-1]. $alignB;
 		$j--;
@@ -94,12 +106,11 @@ while ( $i > 0 or $j > 0) {
 
 sub score {
 	my ($letterA, $letterB) = @_;
+	return -1 if (!$letterB); # Only received one letter
+	return -1 if (!$letterA); # Only received one letter
 	return 1 if ($letterA eq $letterB); #Match
 	return -1 if ($letterA ne $letterB); # Mismatch
-	return -1 if (!$letterB); # Only received one letter
 }
 
 print "Best alignment for $seq1: $alignA\n";
 print "Best alignment for $seq2: $alignB\n";
-
-
