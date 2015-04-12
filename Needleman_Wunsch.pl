@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
-use List::Util qw(max);
+#use List::Util qw(max);
 use Data::Dump;
 
 my $seq1 = $ARGV[0] // 'GCATGCU';
@@ -100,5 +100,18 @@ sub score {
 	return -1 if ($letterA ne $letterB); # Mismatch
 }
 
+sub max {
+	my $max = shift;
+	my $compare = pop @_;
+	return $max if (!$compare);
+	if ($compare > $max) {
+		$max = $compare;
+	}
+	return max($max,@_);
+}
+
+
+
 print "Best alignment for $seq1: $alignA\n";
 print "Best alignment for $seq2: $alignB\n";
+
