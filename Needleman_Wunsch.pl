@@ -3,8 +3,6 @@ use strict;
 use warnings;
 use List::Util qw(max);
 use Data::Dump;
-use Data::Dumper;
-
 
 my $seq1 = $ARGV[0] // 'GCATGCU';
 my $seq2 = $ARGV[1] // 'GATTACA';
@@ -42,7 +40,6 @@ for (my $i=0; $i < length($seq1)+ 1 ; $i++) {
 	$scoreMatrix->[0][$i] = $i * $gap_penalty;
 }
 
-#dd $scoreMatrix;
 
 my $tracebackMatrix;
 $tracebackMatrix->[0][0] = 'Diagonal';
