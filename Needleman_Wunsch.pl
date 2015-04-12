@@ -1,7 +1,6 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
-use Data::Dump;
 
 my $seq1 = $ARGV[0] // 'GCATGCU';
 my $seq2 = $ARGV[1] // 'GATTACA';
@@ -70,8 +69,6 @@ my $alignB = '';
 my $i = length($seq1);
 my $j = length($seq2);
 
-#dd $scoreMatrix;
-#dd $tracebackMatrix;
 
 while ( $i > 0 or $j > 0) {
 	no warnings;
