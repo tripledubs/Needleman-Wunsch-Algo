@@ -29,7 +29,10 @@ my @lettersB = split //, $seq2;
 
 for ( my $i = 0 ; $i < length($seq1) + 1 ; $i++ ) {
    $scoreMatrix->[$i][0] = $i * $gap_penalty;
-   $scoreMatrix->[0][$i] = $i * $gap_penalty;
+}
+
+for (my $i=0; $i < length($seq2) + 1; $i++) {
+	$scoreMatrix->[0][$i] = $i * $gap_penalty;
 }
 
 my $tracebackMatrix;
